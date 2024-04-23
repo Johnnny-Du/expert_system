@@ -52,10 +52,10 @@ def data2list():
         data_process_list.append(data[:-1])# 添加从0到倒数第二个数据
         data_result_list.append(data[-1].replace('\n','')) #添加最后一个数据，删去回车
     #print(data_str)
-    return data_process_list,data_result_list
+    return data_process_list,data_result_list #返回进程列表和结果列表
 
-data_process_list,data_result_list = data2list()
-print(data_process_list,data_result_list)
+data_process_list,data_result_list = data2list() #获取进程列表和结果列表
+#print(data_process_list,data_result_list)
 
 #特征值字典转为提示词函数
 def character_to_callword():
@@ -95,7 +95,7 @@ def find_result(process_list,dict_output):
                 #判断结果是否已在过程中，存在则重新寻找，不在则加入过程，并存入最终结果
                 if result not in process_list:
                     dict_output[','.join(process)] = result #dict_output中添加进程和对应的结果
-                    final_result = find_result(process_list + [result],dict_output)
+                    final_result = find_result(process_list + [result],dict_output) #进行递归运算不断匹配查询条件
                     if final_result :
                         return True
                     else :
@@ -103,7 +103,7 @@ def find_result(process_list,dict_output):
                     pass
                 #存在则直接进行寻找
                 else :
-                    final_result = find_result(process_list,dict_output)
+                    final_result = find_result(process_list,dict_output) #存在，则不添加result进表尾，递归
                     if final_result :
                         return True
                     else:
@@ -111,8 +111,8 @@ def find_result(process_list,dict_output):
                     pass
                 pass
             else:
-                process = data_process_list.pop(index)
-                dict_output[','.join(process)] = data_result_list[index]
+                process = data_process_list.pop(index) #获取进程
+                dict_output[','.join(process)] = data_result_list[index] #添加输出 '进程'：结果，以字典的形式
                 return True
             pass
 
@@ -140,13 +140,13 @@ if __name__ == '__main__' :
     print(character_all_str) #打印提示词
     #存储查询数据列表
     list_data = []
-    #循环输入，直到输入0结束
+
     while 1 :
         input_num = input('请输入数字编号：')
-        while int(input_num) >28 or int(input_num)< 0 :
+        while int(input_num) >28 or int(input_num)< 0 : #输入错误保护
             print('输入错误，请重输！')
             input_num = input('请输入数字编号：')
-
+        # 循环输入，直到输入0结束
         if input_num == '0' :
             break
         #如果编号不在列表中，则加入
@@ -160,7 +160,7 @@ if __name__ == '__main__' :
     print('查询条件为：' + ' '.join(list_data_str) + '\n')
     #存储输出结果
     dict_output = {}
-    #递归查找最终结果，如果返回1，则说明找到了结果
+    #递归查找最终结果，如果返回True，则说明找到了结果
     final_result = find_result(list_data_str,dict_output)
     #判断是否查找成功
     if final_result == 1 :
